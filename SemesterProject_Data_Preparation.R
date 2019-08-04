@@ -200,6 +200,8 @@ QueenAnne.factor = QueenAnne
 QueenAnne.factor[,col.names] = data.frame(sapply(QueenAnne.factor[,col.names], as.factor))
 str(QueenAnne.factor)
 
+#Remove space in Column names
+colnames(QueenAnne.factor) = gsub('\\s+','',colnames(QueenAnne.factor))
 
 #Export QueenAnne
 write.csv(QueenAnne, "~/Desktop/workplace/QueenAnne.csv",row.names = FALSE)

@@ -178,7 +178,7 @@ qa.room.map<- qmplot(longitude, latitude,data = QueenAnne,extent = "panel",colou
 qa.room.map
 
 qa.property.map<- qmplot(longitude, latitude,data = QueenAnne,extent = "panel",colour =property_type, size = I(2),
-                     xlab = "Longitude", ylab = "Latitude", size = 2) +ggtitle( 'Map of Room Type')
+                     xlab = "Longitude", ylab = "Latitude", size = 2) +ggtitle( 'Map of Property Type')
 
 qa.property.map
 

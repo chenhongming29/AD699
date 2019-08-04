@@ -172,9 +172,13 @@ mapplot
 install.packages("ggmap")
 library(ggmap)
 
-qamap<- qmplot(longitude, latitude,data = QueenAnne,extent = "panel",colour =room_type, size = I(2),
+qa.room.map<- qmplot(longitude, latitude,data = QueenAnne,extent = "panel",colour =room_type, size = I(2),
        xlab = "Longitude", ylab = "Latitude", size = 2) +ggtitle( 'Map of Room Type')
 
-qamap
+qa.room.map
 
+qa.property.map<- qmplot(longitude, latitude,data = QueenAnne,extent = "panel",colour =property_type, size = I(2),
+                     xlab = "Longitude", ylab = "Latitude", size = 2) +ggtitle( 'Map of Room Type')
+
+qa.property.map
 

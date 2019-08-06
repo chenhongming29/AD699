@@ -5,6 +5,7 @@ QueenAnne.tg = dplyr::filter(Seattle, neighbourhood_group_cleansed == "Queen Ann
 #install.packages("ggmap")
 library(ggmap)
 library(ggplot2)
+#map plot
 qa.room.map<- qmplot(longitude, latitude,data = QueenAnne.tg,extent = "panel",colour =room_type, size = I(2),
        xlab = "Longitude", ylab = "Latitude", size = 2) +ggtitle( 'Map of Room Type')
 qa.room.map
@@ -12,3 +13,7 @@ qa.room.map
 qa.property.map<- qmplot(longitude, latitude,data = QueenAnne.tg,extent = "panel",colour =property_type, size = I(2),
                      xlab = "Longitude", ylab = "Latitude", size = 2) +ggtitle( 'Map of Property Type')
 qa.property.map
+
+#frequency Polygon
+qa.host.since.plot <- ggplot(QueenAnne.tg,aes(x=host_since))+geom_freqpoly(binwidth=10)
+qa.host.since.plot 

@@ -74,17 +74,12 @@ QueenAnne.dmy$room_type<- as.numeric(QueenAnne.dmy$room_type) # 1 as entire home
 str(QueenAnne.dmy)
 #select varialbes for clustering
 QueenAnne.dmy1 <- QueenAnne.dmy[,c('reviews_per_month','security_deposit','host_is_superhost','price','review_scores_rating','instant_bookable','accommodates',
-                                   'Breakfast','Gym','Kitchen','cleaning_fee')]
-
+                                  'Breakfast','Gym','Kitchen','cleaning_fee')]
+                                   
 
 row.names(QueenAnne.dmy1) <- QueenAnne.clu[,1] 
 #nomolization
 QAcluster.norm <- sapply(QueenAnne.dmy1, scale)
-
-####feature engineering, combine cleaning fee, security deposit and price to total.price
-#total.price <-QAcluster.norm[,2] +QAcluster.norm[,4] +QAcluster.norm[,11] 
-#QAcluster.norm <- cbind(QAcluster.norm, total.price)
-#QAcluster.norm <- QAcluster.norm[, -c(2,4,11)]
 
 #elbow chart
 k.max <- 15
@@ -97,18 +92,16 @@ plot(1:k.max, wss,
      xlab = 'numbers of clusters K',
      ylab = 'total within-cluster sum of squares')
 
-
 #kmeans
-set.seed(125)
+set.seed(1120)
 clusters <- kmeans(QAcluster.norm,9)
 clusters$cluster
 clusters$centers
+clusters$size
+dist(clusters$centers)
 
 QueenAnne.dmy1 <- cbind(QueenAnne.dmy1, clusters$cluster)
-
 colnames(QueenAnne.dmy1)[colnames(QueenAnne.dmy1) == 'clusters$cluster'] <- 'cluster'
-
-class(QueenAnne.dmy1)
 
 QueenAnne.dmy1$price<-as.numeric(gsub("\\$","",as.character(QueenAnne.dmy1$price)))
 QueenAnne.dmy1$cluster<-as.character(QueenAnne.dmy1$cluster)
@@ -134,12 +127,13 @@ summary(clu7)
 summary(clu8)
 summary(clu9)
 #name the clusters
-QueenAnne.dmy1$cluster[QueenAnne.dmy1$cluster== "1"]<- "morning people"
-QueenAnne.dmy1$cluster[QueenAnne.dmy1$cluster== "2"]<- "family choice"
-QueenAnne.dmy1$cluster[QueenAnne.dmy1$cluster== "3"]<- "party choice"
-QueenAnne.dmy1$cluster[QueenAnne.dmy1$cluster== "4"]<- "gym people"
-QueenAnne.dmy1$cluster[QueenAnne.dmy1$cluster== "5"]<- "popular choice"
-QueenAnne.dmy1$cluster[QueenAnne.dmy1$cluster== "6"]<- "cheapest choice"
-QueenAnne.dmy1$cluster[QueenAnne.dmy1$cluster== "7"]<- "average choice"
-QueenAnne.dmy1$cluster[QueenAnne.dmy1$cluster== "8"]<- "think twice"
-QueenAnne.dmy1$cluster[QueenAnne.dmy1$cluster== "9"]<- "luxury choice"
+QueenAnne.dmy1$cluster[QueenAnne.dmy1$cluster== "1"]<- "cheapest choice"
+QueenAnne.dmy1$cluster[QueenAnne.dmy1$cluster== "2"]<- "popular choice"
+QueenAnne.dmy1$cluster[QueenAnne.dmy1$cluster== "3"]<- "gym people"
+QueenAnne.dmy1$cluster[QueenAnne.dmy1$cluster== "4"]<- "family choice"
+QueenAnne.dmy1$cluster[QueenAnne.dmy1$cluster== "5"]<- "luxury choice"
+QueenAnne.dmy1$cluster[QueenAnne.dmy1$cluster== "6"]<- "average choice"
+QueenAnne.dmy1$cluster[QueenAnne.dmy1$cluster== "7"]<- "party choice"
+QueenAnne.dmy1$cluster[QueenAnne.dmy1$cluster== "8"]<- "morning people"
+QueenAnne.dmy1$cluster[QueenAnne.dmy1$cluster== "9"]<- "think twice"
+

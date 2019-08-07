@@ -250,6 +250,9 @@ write.csv(QueenAnne.factor, "~/Desktop/workplace/QueenAnne.factor.csv",row.names
 #Summary Statistics
 #Overall Price Range
 summary(QueenAnne.factor$price)
+
+cat("Queen Anne rental price range: from $", range(QueenAnne.factor$price)[1], " to $", range(QueenAnne.factor$price)[2])
+
 #Price range for each property type
 QueenAnne.Apartment = filter(QueenAnne.factor, Apartment == 1)
 QueenAnne.House = filter(QueenAnne.factor, House == 1)
@@ -260,39 +263,87 @@ QueenAnne.Bungalow = filter(QueenAnne.factor, Bungalow == 1)
 QueenAnne.Townhouse = filter(QueenAnne.factor, Townhouse == 1)
 QueenAnne.Boat = filter(QueenAnne.factor, Boat == 1)
 QueenAnne.Loft = filter(QueenAnne.factor, Loft == 1)
-cat("Price Range for Apartment: \n")
-summary(QueenAnne.Apartment$price)
-summary(QueenAnne.House$price)
-summary(QueenAnne.Cabin$price)
-summary(QueenAnne.Condominium$price)
-summary(QueenAnne.Camper$price)
-summary(QueenAnne.Bungalow$price)
-summary(QueenAnne.Townhouse$price)
-summary(QueenAnne.Boat$price)
-summary(QueenAnne.Loft$price)
+
+#Five nums of each property type
+apartment = summary(QueenAnne.Apartment$price)
+house = summary(QueenAnne.House$price)
+cabin = summary(QueenAnne.Cabin$price)
+condominium = summary(QueenAnne.Condominium$price)
+camper = summary(QueenAnne.Camper$price)
+bungalow = summary(QueenAnne.Bungalow$price)
+townhouse = summary(QueenAnne.Townhouse$price)
+boat = summary(QueenAnne.Boat$price)
+loft = summary(QueenAnne.Loft$price)
+
+property.df = data.frame("Apartment" = c(apartment[1:5]),
+                        "House" = c(house[1:5]),
+                        "cabin"= c(cabin[1:5]),
+                        "condominium" = c(condominium[1:5]),
+                        "camper" = c(camper[1:5]),
+                        "bungalow" = c(bungalow[1:5]),
+                        "townhouse" = c(townhouse[1:5]),
+                        "boat"= c(boat[1:5]),
+                        "loft" = c(loft[1:5]))
+
 
 #Distribution of accommodates of different room type in QueenAnne
-summary(QueenAnne.Apartment$accommodates)
-summary(QueenAnne.House$accommodates)
-summary(QueenAnne.Cabin$accommodates)
-summary(QueenAnne.Condominium$accommodates)
-summary(QueenAnne.Camper$accommodates)
-summary(QueenAnne.Bungalow$accommodates)
-summary(QueenAnne.Townhouse$accommodates)
-summary(QueenAnne.Boat$accommodates)
-summary(QueenAnne.Loft$accommodates)
+a.mean = round(mean(QueenAnne.Apartment$accommodates),2)
+h.mean = round(mean(QueenAnne.House$accommodates), 2)
+c.mean = mean(QueenAnne.Cabin$accommodates)
+con.mean = mean(QueenAnne.Condominium$accommodates)
+cam.mean = mean(QueenAnne.Camper$accommodates)
+bun.mean = mean(QueenAnne.Bungalow$accommodates)
+tow.mean = mean(QueenAnne.Townhouse$accommodates)
+boa.mean = mean(QueenAnne.Boat$accommodates)
+lof.mean = mean(QueenAnne.Loft$accommodates)
+
 
 #Distribution of review Scores for each type
-summary(QueenAnne.Apartment$review_scores_rating)
-summary(QueenAnne.House$review_scores_rating)
-summary(QueenAnne.Cabin$review_scores_rating)
-summary(QueenAnne.Condominium$review_scores_rating)
-summary(QueenAnne.Camper$review_scores_rating)
-summary(QueenAnne.Bungalow$review_scores_rating)
-summary(QueenAnne.Townhouse$review_scores_rating)
-summary(QueenAnne.Boat$review_scores_rating)
-summary(QueenAnne.Loft$review_scores_rating)
+a.re = round(mean(QueenAnne.Apartment$review_scores_rating),2)
+h.re = round(mean(QueenAnne.House$review_scores_rating),2)
+c.re = round(mean(QueenAnne.Cabin$review_scores_rating),2)
+con.re = round(mean(QueenAnne.Condominium$review_scores_rating),2)
+cam.re = round(mean(QueenAnne.Camper$review_scores_rating),2)
+bun.re = round(mean(QueenAnne.Bungalow$review_scores_rating),2)
+tow.re = round(mean(QueenAnne.Townhouse$review_scores_rating),2)
+boa.re = round(mean(QueenAnne.Boat$review_scores_rating),2)
+lof.re = round(mean(QueenAnne.Loft$review_scores_rating),2)
 
+#create data frame for property types
+accommodates.df = data.frame("PropertyType" = c("Apartment",
+                                                "House",
+                                                "Cabin",
+                                                "Condominium",
+                                                "Camper",
+                                                "Bungalow",
+                                                "Townhouse",
+                                                "Boat",
+                                                "Loft"),
+                             "Accommodates" = c(a.mean, h.mean, c.mean, con.mean, cam.mean, bun.mean, tow.mean, boa.mean, lof.mean),
+                             "Review" = c(a.re, h.re,c.re,con.re,cam.re,bun.re,tow.re,boa.re,lof.re))
+accommodates.df$Accommodates = as.factor(accommodates.df$Accommodates)
+
+#Accommodates Plot
+ggplot(accommodates.df, aes(x=Accommodates, y=PropertyType, label=Accommodates)) + 
+  geom_point(stat='identity', aes(col=PropertyType), size=6)  +
+  scale_color_manual(name="Accomodates", 
+                     labels = c("Apartment", "Boat","Bungalow","Cabin","Camper","Condominium","House","Loft","Townhouse"), 
+                     values = c("#CC0000", "#006600", "#669999", "#00CCCC", 
+                                "#660099", "#CC0066", "#FF9999", "#FF9900","Black")) + 
+  geom_text(color="white", size=2) +
+  labs(title="Accommodates Plot for each Property Type") +
+  coord_flip()
+
+#Review Plot
+ggplot(accommodates.df, aes(x=Review, y=PropertyType, label=Review)) + 
+  geom_point(stat='identity', aes(col=PropertyType), size=6)  +
+  scale_color_manual(name="Accomodates", 
+                     labels = c("Apartment", "Boat","Bungalow","Cabin","Camper","Condominium","House","Loft","Townhouse"), 
+                     values = c("#CC0000", "#006600", "#669999", "#00CCCC", 
+                                "#660099", "#CC0066", "#FF9999", "#FF9900","Black")) + 
+  geom_text(color="white", size=2) +
+  labs(title="Review Plot for each Property Type") +
+  coord_flip()
 
 #For each property type, what is the percentage that the rooms are pet allowed?
 QueenAnne.Apartment.pet = filter(QueenAnne.Apartment, PetsAllowed == 1)
@@ -327,7 +378,7 @@ cat("For Apartment:\n the percentage of a random room being pet allowed is: ",
 
 
 #Visualization
-
+boxplot(QueenAnne.factor$price, xlab = "Queen Anne", ylab = "Price")
 
 
 
